@@ -18,6 +18,7 @@ def init_relevance():
   for i in range(0,136):
     relFile = open(NDCG_PATH+'NDCG'+str(i+1)+'.txt')
     lineList = relFile.readlines()
+    relFile.close()
     G.nodes[i]['relevance'] = float(lineList[-3][22:-1])
 
 def init_similarity():
