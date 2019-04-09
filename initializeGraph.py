@@ -61,7 +61,7 @@ def init_similarity():
   for i in range(136):
     print(i)
     for j in range(i+1, 136):
-      print(str((j/136)*100)+'%')
+      print("%.2f" % ((j/136)*100) + "%")
       G[i][j]['similarity'] = avg_spearman(featureRankList[i], featureRankList[j])
 
 if __name__ == "__main__":
