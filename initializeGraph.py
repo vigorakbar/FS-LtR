@@ -3,6 +3,7 @@ import networkx as nx
 import scipy.stats as ss
 import numpy as np
 import statistics
+import time
 
 NODE_SIZE = 136
 NDCG_PATH = '/home/vigor/Documents/TA/NDCGs/'
@@ -57,16 +58,20 @@ def avg_spearman(a,b):
 def init_similarity():
   print('initialize similarity score...')
   for i in range(136):
-    print(i)
     for j in range(i+1, 136):
-      print("%.2f" % ((j/136)*100) + "%")
+      print("%.2f" % ((j/136)*100) + "%" + " (%d/136)" % (i+1))
       G[i][j]['similarity'] = avg_spearman(featureRankList[i], featureRankList[j])
 
 if __name__ == "__main__":
   print('initializing graph...')
+  start = time.time()
   G = nx.complete_graph(NODE_SIZE)
   featureRankList = []
   init_relevance()
   init_ranking()
   init_similarity()
   nx.write_gexf(G, GRAPH_PATH)
+  end = time.time()
+  print('finished.')
+  print('Graph initialization time:')
+  print("%.2f" % (end - start) + " seconds")
