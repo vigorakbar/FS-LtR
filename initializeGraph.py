@@ -1,6 +1,7 @@
 import sys
 import networkx as nx
 import scipy.stats as ss
+import numpy as np
 import statistics
 
 NODE_SIZE = 136
@@ -43,15 +44,12 @@ def init_ranking():
     featureRankList.append(rankList)
     print(i)
 
-def covariance(x,y):
-  return sum((a - statistics.mean(x)) * (b - statistics.mean(y)) for (a,b) in zip(x,y)) / len(x)
-
 def spearman(a, b, i):
   la = a.tolist()
   lb = b.tolist()
   if(len(la) == 1 or len(lb) == 1):
     return 1
-  return covariance(la,lb)/(statistics.stdev(la)*statistics.stdev(lb))
+  return np.cov(la,lb)[0][1]/(statistics.stdev(la)*statistics.stdev(lb))
 
 def avg_spearman(a,b):
   return statistics.mean([spearman(a[i], b[i], i) for i in range(len(a))])
