@@ -21,7 +21,9 @@ def mmr():
           diff_score = diff_score + (1 - G[key1][key2]['similarity'])
         diff_score = (diff_score * TRADE_OFF) / len(feature_subset)
         mmr[key1] = (1 - TRADE_OFF) * G.nodes[key1]['relevance'] + diff_score
-    max_rel = max(mmr.keys(), key=(lambda key: mmr[key]))
+      max_rel = max(mmr.keys(), key=(lambda key: mmr[key]))
+    else:
+      max_rel = max(nodes.keys(), key=(lambda key: nodes[key]))
     feature_subset.append(max_rel)
     G.remove_node(max_rel)
 
