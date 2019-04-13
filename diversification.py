@@ -22,7 +22,7 @@ def mmr():
         diff_score = (diff_score * TRADE_OFF) / len(feature_subset)
         mmr[key1] = (1 - TRADE_OFF) * G.nodes[key1]['relevance'] + diff_score
     max_rel = max(mmr.keys(), key=(lambda key: mmr[key]))
-    feature_subset[max_rel] = G.nodes[max_rel]['relevance']
+    feature_subset.append(max_rel)
     G.remove_node(max_rel)
 
 def msd():
@@ -32,8 +32,8 @@ def msd():
   while len(feature_subset) < MAX_FEATURE_SUBSET:
     msds = nx.get_edge_attributes(G, 'msd')
     max_msd = max(msds.keys(), key=(lambda key: msds[key]))
-    feature_subset[max_msd[0]] = msds[max_msd]
-    feature_subset[max_msd[1]] = msds[max_msd]
+    feature_subset.append([max_msd[0]])
+    feature_subset.append([max_msd[1]])
     G.remove_node(max_msd[0])
     G.remove_node(max_msd[1])
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     print('set `msd` as default argument...')
   # read Graph
   G = nx.read_gexf(GRAPH_PATH)
-  feature_subset = {}
+  feature_subset = []
       
   if (arg == 'mmr'):
     mmr()
