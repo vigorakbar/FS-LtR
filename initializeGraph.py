@@ -64,7 +64,7 @@ def init_similarity():
   for i in range(NODE_SIZE):
     for j in range(i+1, NODE_SIZE):
       print("%.2f" % ((j/NODE_SIZE)*100) + "%" + " (%d" % (i+1) + "/" + "%d)" % NODE_SIZE)
-      G[i][j]['similarity'] = avg_spearman(featureRankList[i], featureRankList[j])
+      G[i][j]['similarity'] = float(avg_spearman(featureRankList[i], featureRankList[j]))
 
 if __name__ == "__main__":
   print('initializing graph...')
