@@ -76,12 +76,12 @@ if __name__ == "__main__":
 
   n_subset = 5
   while n_subset < MAX_FEATURE_SUBSET:
-    fileHandle = open("/results/sub"+str(n_subset)+".txt", "w+")
+    fileHandle = open("/results/" + arg + "/sub" + str(n_subset) + ".txt", "w+")
     for i in range(n_subset):
       fileHandle.write("%d\n" % feature_subset[i])
     fileHandle.close()
 
-  fileHandle = open("/results/sub"+str(MAX_FEATURE_SUBSET)+".txt", "w+")
+  fileHandle = open("/results/" + arg + "/sub" + str(MAX_FEATURE_SUBSET) + ".txt", "w+")
   for i in range(MAX_FEATURE_SUBSET):
     fileHandle.write("%d\n" % feature_subset[i])
   fileHandle.close()
