@@ -5,14 +5,18 @@ import numpy as np
 import statistics
 import time
 
+pathFile = open('path.txt')
+linePath = pathFile.readlines()
+pathFile.close()
+
 NODE_SIZE = 136
-NDCG_PATH = '/home/vigor/Documents/TA/NDCGs/'
-RANKS_PATH = '/home/vigor/Documents/TA/ranks/'
-GRAPH_PATH = '/home/vigor/Documents/TA/graph/'
+NDCG_PATH = linePath[0][:-1]
+RANKS_PATH = linePath[1][:-1]
+GRAPH_PATH = linePath[2][:-1]
 
 def init_relevance():
   print('initialize relevance score...')
-  for i in range(136):
+  for i in range(NODE_SIZE):
     relFile = open(NDCG_PATH+'NDCG'+str(i+1)+'.txt')
     lineList = relFile.readlines()
     relFile.close()
@@ -20,7 +24,7 @@ def init_relevance():
 
 def init_ranking():
   print('initialize ranking test result...')
-  for i in range(136):
+  for i in range(NODE_SIZE):
     rankList = []
     rankSeq = []
     relFile = open(RANKS_PATH+'rank'+str(i+1)+'.txt')
@@ -57,9 +61,9 @@ def avg_spearman(a,b):
 
 def init_similarity():
   print('initialize similarity score...')
-  for i in range(136):
-    for j in range(i+1, 136):
-      print("%.2f" % ((j/136)*100) + "%" + " (%d/136)" % (i+1))
+  for i in range(NODE_SIZE):
+    for j in range(i+1, NODE_SIZE):
+      print("%.2f" % ((j/NODE_SIZE)*100) + "%" + " (%d" % (i+1) + "/" + "%d)" % NODE_SIZE)
       G[i][j]['similarity'] = avg_spearman(featureRankList[i], featureRankList[j])
 
 if __name__ == "__main__":
