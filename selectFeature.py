@@ -34,8 +34,8 @@ def msd():
   while len(feature_subset) < MAX_FEATURE_SUBSET:
     msds = nx.get_edge_attributes(G, 'msd')
     max_msd = max(msds.keys(), key=(lambda key: msds[key]))
-    feature_subset.append([max_msd[0]])
-    feature_subset.append([max_msd[1]])
+    feature_subset.append(max_msd[0])
+    feature_subset.append(max_msd[1])
     G.remove_node(max_msd[0])
     G.remove_node(max_msd[1])
 
