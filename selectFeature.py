@@ -62,8 +62,9 @@ if __name__ == "__main__":
     print('set `msd` as default argument...')
   # read Graph
   G = nx.read_gexf(GRAPH_PATH)
+  G = nx.relabel_nodes(G, lambda x: int(x))
   feature_subset = []
-      
+
   if (arg == 'mmr'):
     mmr()
   elif (arg == 'msd'):
