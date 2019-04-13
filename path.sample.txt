@@ -1,0 +1,4 @@
+/change/to/your/NDCGs/path/
+/change/to/your/ranks/path/
+/change/to/your/destination/graph/file/path/graph.gexf
+**change the file name to path.txt. make sure you have newline here if you delete this very comment.**
