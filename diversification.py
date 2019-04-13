@@ -1,16 +1,57 @@
 import sys
 import networkx as nx
+import math
 
-GRAPH_PATH = '/home/vigor/Documents/TA/graph/'
+pathFile = open('path.txt')
+linePath = pathFile.readlines()
+pathFile.close()
+
+GRAPH_PATH = linePath[2][:-1]
+MAX_FEATURE_SUBSET = 30
+TRADE_OFF = 0.5
 
 def mmr():
-  print('using MMR')
+  for i in range(MAX_FEATURE_SUBSET):
+    mmr = {}
+    nodes = nx.get_node_attributes(G, 'relevance')
+    if (i != 0):
+      for key1 in nodes.items():
+        diff_score = 0
+        for key2 in feature_subset:
+          diff_score = diff_score + (1 - G[key1][key2]['similarity'])
+        diff_score = (diff_score * TRADE_OFF) / len(feature_subset)
+        mmr[key1] = (1 - TRADE_OFF) * G.nodes[key1]['relevance'] + diff_score
+    max_rel = max(mmr.keys(), key=(lambda key: mmr[key]))
+    feature_subset[max_rel] = G.nodes[max_rel]['relevance']
+    G.remove_node(max_rel)
 
 def msd():
-  print('using MSD')
+  for i in range(len(G)):
+    for j in range(i+1, len(G)):
+      G[i][j]['msd'] = (1 - TRADE_OFF) * (G.nodes[i]['relevance'] + G.nodes[j]['relevance']) + 2 * TRADE_OFF * (1 - G[i][j]['similarity'])
+  while len(feature_subset) < MAX_FEATURE_SUBSET:
+    msds = nx.get_edge_attributes(G, 'msd')
+    max_msd = max(msds.keys(), key=(lambda key: msds[key]))
+    feature_subset[max_msd[0]] = msds[max_msd]
+    feature_subset[max_msd[1]] = msds[max_msd]
+    G.remove_node(max_msd[0])
+    G.remove_node(max_msd[1])
 
-def mpt():
-  print('using MPT')
+# TODO: Implement itung variance of relevance (u/ nodes_var) pas initialize graph
+# TODO: uncomment mpt()
+# def mpt():
+#   for _ in range(MAX_FEATURE_SUBSET):
+#     mpt = {}
+#     nodes = nx.get_node_attributes(G, 'relevance')
+#     nodes_var = nx.get_node_attributes(G, 'var_of_rel')
+#     for key1, value in nodes.items():
+#       diff_score = 0
+#       for key2 in feature_subset:
+#         diff_score = diff_score + (math.sqrt(nodes_var[key2]) * G[key1][key2]['similarity'])
+#       mpt[key1] = value - (TRADE_OFF * nodes_var[key1] + 2 * TRADE_OFF * math.sqrt(nodes_var[key1]) * diff_score)
+#     max_rel = max(mpt.keys(), key=(lambda key: mpt[key]))
+#     feature_subset[max_rel] = mpt[max_rel]
+#     G.remove_node(max_rel)
 
 if __name__ == "__main__":
   print('starting feature selection using diversification method...')
@@ -21,10 +62,11 @@ if __name__ == "__main__":
     print('set `msd` as default argument...')
   # read Graph
   G = nx.read_gexf(GRAPH_PATH)
-
+  feature_subset = {}
+      
   if (arg == 'mmr'):
     mmr()
   elif (arg == 'msd'):
     msd()
-  elif (arg == 'mpt'):
-    mpt()
+  # elif (arg == 'mpt'):
+  #   mpt()
