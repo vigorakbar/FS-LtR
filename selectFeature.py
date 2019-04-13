@@ -18,6 +18,8 @@ def mmr():
       for key1 in nodes.items():
         diff_score = 0
         for key2 in feature_subset:
+          print(key1)
+          print(key2)
           diff_score = diff_score + (1 - G[key1][key2]['similarity'])
         diff_score = (diff_score * TRADE_OFF) / len(feature_subset)
         mmr[key1] = (1 - TRADE_OFF) * G.nodes[key1]['relevance'] + diff_score
