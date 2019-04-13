@@ -18,13 +18,18 @@ def mmr():
       for key1, value in nodes.items():
         diff_score = 0
         for key2 in feature_subset:
-          diff_score = diff_score + (1 - G[key1][key2]['similarity'])
+          if key1 < key2:
+            sim = edges[key1, key2]
+          else:
+            sim = edges[key2, key1]
+          diff_score = diff_score + (1 - sim)
         diff_score = (diff_score * TRADE_OFF) / len(feature_subset)
         mmr[key1] = (1 - TRADE_OFF) * value + diff_score
       max_rel = max(mmr.keys(), key=(lambda key: mmr[key]))
     else:
       max_rel = max(nodes.keys(), key=(lambda key: nodes[key]))
     feature_subset.append(max_rel)
+    edges = nx.get_edge_attributes(G, 'similarity')
     G.remove_node(max_rel)
 
 def msd():
