@@ -7,7 +7,7 @@ linePath = pathFile.readlines()
 pathFile.close()
 
 GRAPH_PATH = linePath[2][:-1]
-MAX_FEATURE_SUBSET = 30
+MAX_FEATURE_SUBSET = 50
 TRADE_OFF = 0.5
 
 def mmr():
@@ -70,3 +70,18 @@ if __name__ == "__main__":
     msd()
   # elif (arg == 'mpt'):
   #   mpt()
+
+  # change nodes index to feature id
+  feature_subset = [i + 1 for i in feature_subset]
+
+  n_subset = 5
+  while n_subset < MAX_FEATURE_SUBSET:
+    fileHandle = open("/results/sub"+str(n_subset)+".txt", "w+")
+    for i in range(n_subset):
+      fileHandle.write("%d\n" % feature_subset[i])
+    fileHandle.close()
+
+  fileHandle = open("/results/sub"+str(MAX_FEATURE_SUBSET)+".txt", "w+")
+  for i in range(MAX_FEATURE_SUBSET):
+    fileHandle.write("%d\n" % feature_subset[i])
+  fileHandle.close()
