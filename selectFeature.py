@@ -11,6 +11,7 @@ MAX_FEATURE_SUBSET = 50
 TRADE_OFF = 0.5
 
 def mmr():
+  edges = nx.get_edge_attributes(G, 'similarity')
   for i in range(MAX_FEATURE_SUBSET):
     mmr = {}
     nodes = nx.get_node_attributes(G, 'relevance')
@@ -29,7 +30,6 @@ def mmr():
     else:
       max_rel = max(nodes.keys(), key=(lambda key: nodes[key]))
     feature_subset.append(max_rel)
-    edges = nx.get_edge_attributes(G, 'similarity')
     G.remove_node(max_rel)
 
 def msd():
@@ -73,10 +73,13 @@ if __name__ == "__main__":
   feature_subset = []
 
   if (arg == 'mmr'):
+    print("using mmr...")
     mmr()
   elif (arg == 'msd'):
+    print("using msd...")
     msd()
   # elif (arg == 'mpt'):
+  #   print("using mpt...")
   #   mpt()
 
   # change nodes index to feature id
@@ -84,12 +87,15 @@ if __name__ == "__main__":
 
   n_subset = 5
   while n_subset < MAX_FEATURE_SUBSET:
-    fileHandle = open("/results/" + arg + "/sub" + str(n_subset) + ".txt", "w+")
+    fileHandle = open("results/" + arg + "/sub" + str(n_subset) + ".txt", "w+")
     for i in range(n_subset):
       fileHandle.write("%d\n" % feature_subset[i])
     fileHandle.close()
+    n_subset += 5
 
-  fileHandle = open("/results/" + arg + "/sub" + str(MAX_FEATURE_SUBSET) + ".txt", "w+")
+  fileHandle = open("results/" + arg + "/sub" + str(MAX_FEATURE_SUBSET) + ".txt", "w+")
   for i in range(MAX_FEATURE_SUBSET):
     fileHandle.write("%d\n" % feature_subset[i])
   fileHandle.close()
+
+  print("done.")
