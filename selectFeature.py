@@ -88,12 +88,15 @@ if __name__ == "__main__":
   n_subset = 5
   while n_subset < MAX_FEATURE_SUBSET:
     fileHandle = open("results/" + arg + "/sub" + str(n_subset) + ".txt", "w+")
+    sorted_subset = feature_subset[:n_subset]
+    sorted_subset.sort()
     for i in range(n_subset):
-      fileHandle.write("%d\n" % feature_subset[i])
+      fileHandle.write("%d\n" % sorted_subset[i])
     fileHandle.close()
     n_subset += 5
 
   fileHandle = open("results/" + arg + "/sub" + str(MAX_FEATURE_SUBSET) + ".txt", "w+")
+  feature_subset.sort()
   for i in range(MAX_FEATURE_SUBSET):
     fileHandle.write("%d\n" % feature_subset[i])
   fileHandle.close()
