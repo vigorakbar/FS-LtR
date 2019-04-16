@@ -7,7 +7,7 @@ linePath = pathFile.readlines()
 pathFile.close()
 
 GRAPH_PATH = linePath[2][:-1]
-MAX_FEATURE_SUBSET = 50
+MAX_FEATURE_SUBSET = 75
 TRADE_OFF = 0.5
 XGAS_P = 0.5
 
