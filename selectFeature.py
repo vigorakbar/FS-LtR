@@ -9,6 +9,7 @@ pathFile.close()
 GRAPH_PATH = linePath[2][:-1]
 MAX_FEATURE_SUBSET = 50
 TRADE_OFF = 0.5
+XGAS_P = 0.5
 
 def mmr():
   edges = nx.get_edge_attributes(G, 'similarity')
@@ -60,6 +61,34 @@ def msd():
 #     feature_subset[max_rel] = mpt[max_rel]
 #     G.remove_node(max_rel)
 
+def ngas():
+  nodes = nx.get_node_attributes(G, 'relevance')
+  edges = nx.get_edge_attributes(G, 'similarity')
+  max_rel = max(nodes.keys(), key=(lambda key: nodes[key]))
+  feature_subset.append(max_rel)
+  G.remove_node(max_rel)
+  for _ in range(1, MAX_FEATURE_SUBSET):
+    vl_dict = {x: y for x,y in edges.items() if max_rel in x}
+    vl = min(vl_dict.keys(), key=(lambda key: vl_dict[key]))
+    vl = (vl[0] if vl[1] == max_rel else vl[1])
+    edges = nx.get_edge_attributes(G, 'similarity')
+    vh_dict = {x: y for x,y in edges.items() if vl in x}
+    vh = max(vh_dict.keys(), key=(lambda key: vh_dict[key]))
+    vh = (vh[0] if vh[1] == vl else vh[1])
+    vlvh = {vl: G.nodes[vl]['relevance'], vh: G.nodes[vh]['relevance']}
+    max_rel = max(vlvh.keys(), key=(lambda key:vlvh[key]))
+    feature_subset.append(max_rel)
+    G.remove_node(max_rel)
+
+# def xgas():
+#   nodes = nx.get_node_attributes(G, 'relevance')
+#   edges = nx.get_edge_attributes(G, 'similarity')
+#   max_rel = max(nodes.keys(), key=(lambda key: nodes[key]))
+#   feature_subset.append(max_rel)
+#   G.remove_node(max_rel)
+#   for _ in range(1, MAX_FEATURE_SUBSET):
+#     for i in range(len(G)/)
+
 if __name__ == "__main__":
   print('starting feature selection using diversification method...')
   arg = 'msd'
@@ -81,6 +110,15 @@ if __name__ == "__main__":
   # elif (arg == 'mpt'):
   #   print("using mpt...")
   #   mpt()
+  elif (arg == 'ngas'):
+    print("using ngas...")
+    ngas()
+  # elif (arg == 'xgas'):
+  #   print("using xgas...")
+  #   xgas()
+  # elif (arg == 'hcas'):
+  #   print("using hcas...")
+  #   hcas()
 
   # change nodes index to feature id
   feature_subset = [i + 1 for i in feature_subset]
