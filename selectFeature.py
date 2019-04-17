@@ -80,14 +80,24 @@ def ngas():
     feature_subset.append(max_rel)
     G.remove_node(max_rel)
 
-# def xgas():
-#   nodes = nx.get_node_attributes(G, 'relevance')
-#   edges = nx.get_edge_attributes(G, 'similarity')
-#   max_rel = max(nodes.keys(), key=(lambda key: nodes[key]))
-#   feature_subset.append(max_rel)
-#   G.remove_node(max_rel)
-#   for _ in range(1, MAX_FEATURE_SUBSET):
-#     for i in range(len(G)/)
+def xgas():
+  nodes = nx.get_node_attributes(G, 'relevance')
+  edges = nx.get_edge_attributes(G, 'similarity')
+  max_rel = max(nodes.keys(), key=(lambda key: nodes[key]))
+  feature_subset.append(max_rel)
+  G.remove_node(max_rel)
+  for _ in range(1, MAX_FEATURE_SUBSET):
+    edges_temp = {x: y for x,y in edges.items() if max_rel in x}
+    sub_edge = {}
+    edges = nx.get_edge_attributes(G, 'similarity')
+    for _ in range(math.ceil(len(G)*XGAS_P)):
+      min_sim_key = min(edges_temp.keys(), key=(lambda key: edges_temp[key]))
+      min_sim = (min_sim_key[0] if min_sim_key[1] == max_rel else min_sim_key[1])
+      sub_edge[min_sim] = nodes[min_sim]
+      del edges_temp[min_sim_key]
+    max_rel = max(sub_edge.keys(), key=(lambda key: sub_edge[key]))
+    feature_subset.append(max_rel)
+    G.remove_node(max_rel)
 
 if __name__ == "__main__":
   print('starting feature selection using diversification method...')
@@ -113,9 +123,9 @@ if __name__ == "__main__":
   elif (arg == 'ngas'):
     print("using ngas...")
     ngas()
-  # elif (arg == 'xgas'):
-  #   print("using xgas...")
-  #   xgas()
+  elif (arg == 'xgas'):
+    print("using xgas...")
+    xgas()
   # elif (arg == 'hcas'):
   #   print("using hcas...")
   #   hcas()
