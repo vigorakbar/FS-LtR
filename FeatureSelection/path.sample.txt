@@ -1,4 +1,6 @@
 /change/to/your/NDCGs/path/
 /change/to/your/ranks/path/
 /change/to/your/destination/graph/file/path/graph.gexf
+/change/to/your/destination/graph_v2/file/path/graph_v2.gexf
+/change/to/your/featureUseStats/featureUseStats.txt
 **change the file name to path.txt. make sure you have newline here if you delete this very comment.**
