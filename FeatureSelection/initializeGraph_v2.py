@@ -41,6 +41,7 @@ def init_relevance():
   78, 36, 243, 117, 104, 65, 40, 134, 102, 79, 77, 149, 188, 48, 249, 212, 398, 204, 179, 192, 95, 29
   
   normRelArr = (relArr - np.min(relArr))/np.ptp(relArr)
+  normRelArr = normRelArr.tolist()
   for i in range(NODE_SIZE):
     G.nodes[i]['relevance'] = normRelArr[i]
 
